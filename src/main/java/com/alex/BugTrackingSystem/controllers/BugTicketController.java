@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.alex.BugTrackingSystem.models.BugTicket;
@@ -42,6 +43,16 @@ public class BugTicketController {
 			return "dashboard.jsp";
 		}
 	}
+	@GetMapping("/ticket/{id}")
+	public String ticketInfo(@PathVariable("id") Long id, HttpSession session, Model model) {
+		if(session.getAttribute("userId")==null) {
+			return "redirect:/";
+		}
+		BugTicket bugTicket = ticketService.findById(id);
+		model.addAttribute("bugTicket", bugTicket);
+		return "ticketInfo.jsp";
+	}
+	
 	@GetMapping("/newTicket")
 	public String newTicket(@ModelAttribute("newTicket") BugTicket newTicket, Model model, HttpSession session) {
 		if(session.getAttribute("userId")==null) {
