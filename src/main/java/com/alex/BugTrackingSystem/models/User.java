@@ -56,6 +56,21 @@ public class User {
 			)
 	private List<BugTicket> bugTickets;
 	
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "users_roles", 
+        joinColumns = @JoinColumn(name = "user_id"), 
+        inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
+	
+	
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
 	public List<BugTicket> getBugTickets() {
 		return bugTickets;
 	}

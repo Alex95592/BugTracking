@@ -1,10 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%><%@taglib
-	prefix="form" uri="http://www.springframework.org/tags/form"%>
-
-<%@ page isErrorPage="true"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +12,7 @@
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
-<title>Dashboard</title>
+<title>Insert title here</title>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
@@ -32,30 +30,6 @@
 						<a class="nav-link" href="http://localhost:8080/users">Users</a>
 					</c:if></li>
 			</ul>
-			<form action="" method="GET" class="d-flex">
-				<select class="form-select" name="searchOption">
-					<option class="dropdown-item" value=""></option>
-					<option value="createdBy">Created At Up</option>
-					<option value="reverseCreatedBy">Created At Down</option>
-					<option value="name">Name A-Z</option>
-					<option value="reverseName">Name Z-A</option>
-					<option value="importance">Importance(Immediate-None)</option>
-					<option value="reporter">Reporter</option>
-					<option value="status">Status</option>
-					<option value="reverseStatus">Status Up</option>
-					<option value="dueDate">Due date Up</option>
-					<option value="reverseDueDate">Due date Down</option>
-
-				</select>
-				<button style="margin-left: 10px" class="btn btn-outline-success"
-					type="submit">Search</button>
-			</form>
-			<form action="" method="get" class="d-flex" role="search"
-				style="margin-left: 10px">
-				<input class="form-control me-2" type="text" name="query"
-					placeholder="Search">
-				<button class="btn btn-outline-success" type="submit">Search</button>
-			</form>
 			<form method="POST" action="/logout">
 				<input type="hidden" name="${_csrf.parameterName}"
 					value="${_csrf.token}" /> <input class="btn btn-primary"
@@ -63,6 +37,7 @@
 			</form>
 		</div>
 	</nav>
+	<h2>Reported Tickets</h2>
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -76,7 +51,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="ticket" items="${bugTickets}">
+			<c:forEach var="ticket" items="${reportedTickets}">
 				<tr>
 					<td><a href="http://localhost:8080/ticket/${ticket.id}"><c:out
 								value="${ticket.name}" /></a></td>

@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name="bugTickets")
@@ -29,8 +30,8 @@ public class BugTicket {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty(message = "Bug name is required.")
-	@Size(min= 3, max =40, message="Bug name must be at least 3 characters in length.")
+	@NotEmpty(message = "Ticket name is required.")
+	@Size(min= 3, max =40, message="Ticket name must be at least 3 characters in length.")
 	private String name; 
 	
 	@NotEmpty(message = "Please rank the importance of this task.")
@@ -42,9 +43,15 @@ public class BugTicket {
 	@NotEmpty(message = "Please add the description of this Bug.")
 	private String description;
 	
+	@NotEmpty(message = "Please add steps to re-create Bug.")
+	private String recreationSteps;
+	
 	@NotNull(message = "Please add the Due date for this task.")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date dueDate;
+	
+	@Nullable
+	private String assignedUser;
 	
 	@Column(updatable = false)
 	private Date createdAt;
@@ -76,6 +83,15 @@ public class BugTicket {
 		this.status = status;
 		this.description = description;
 		this.dueDate = dueDate;
+	}
+	
+	
+	public String getRecreationSteps() {
+		return recreationSteps;
+	}
+
+	public void setRecreationSteps(String recreationSteps) {
+		this.recreationSteps = recreationSteps;
 	}
 
 	public Long getId() {
@@ -125,7 +141,18 @@ public class BugTicket {
 	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
+	public Date getCreatedDate() {
+		return createdAt;
+	}
 	
+	public String getAssignedUser() {
+		return assignedUser;
+	}
+
+	public void setAssignedUser(String assignedUser) {
+		this.assignedUser = assignedUser;
+	}
+
 	@PrePersist
 	protected void onCreate(){
 		this.createdAt = new Date();

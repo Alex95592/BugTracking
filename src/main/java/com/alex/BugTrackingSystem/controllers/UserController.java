@@ -1,61 +1,52 @@
 package com.alex.BugTrackingSystem.controllers;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.alex.BugTrackingSystem.models.LoginUser;
 import com.alex.BugTrackingSystem.models.User;
 import com.alex.BugTrackingSystem.services.UserService;
 
 @Controller
 public class UserController {
 
-	@Autowired
 	private UserService userService;
-	@GetMapping("/")
-	public String index(Model model, HttpSession session) {
-		session.setAttribute("userId", null);
-		model.addAttribute("newUser", new User());
-		model.addAttribute("newLogin", new LoginUser());
-		return "login_register.jsp";
-		
+
+	public UserController(UserService userService) {
+		this.userService = userService;
 	}
-	
-	@PostMapping("/loginUser")
-	public String login(@Valid @ModelAttribute("newLogin") LoginUser newLogin, BindingResult result, Model model, HttpSession session) {
-		User user = userService.login(newLogin, result);
-		if(result.hasErrors()) {
-			model.addAttribute("newUser", new User());
-			return "login_register.jsp";
-		}else {
-			session.setAttribute("userId", user.getId());
-			System.out.println(user.getEmail());
-			return "redirect:/dashboard";
+
+	@GetMapping("/login")
+	public String log(@RequestParam(value = "error", required = false) String error,
+			@RequestParam(value = "logout", required = false) String logout, Model model) {
+		if (error != null) {
+			model.addAttribute("errorMessage", "Invalid creditials, Please try again.");
 		}
-	}
-	@PostMapping("/registerUser")
-	public String register(@Valid @ModelAttribute("newUser") User newUser, BindingResult result, Model model, HttpSession session) {
-		User user = userService.register(newUser, result);
-		if(user == null) {
-			model.addAttribute("newLogin", new LoginUser());
-			return "login_register.jsp";
-		}else {
-			session.setAttribute("userId", user.getId());
-			System.out.println(user.getEmail());
-			return "redirect:/dashboard";
+		if (logout != null) {
+			model.addAttribute("logoutMessage", "Logout Successful!");
 		}
+		return "loginPage.jsp";
 	}
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.setAttribute("userId", null);
-		return "redirect:/";
+
+	@GetMapping("/registration")
+	public String registration(@ModelAttribute("user") User user) {
+		return "registerPage.jsp";
 	}
+
+	@PostMapping("/registration")
+	public String registration(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+
+			return "registerPage.jsp";
+		}
+		userService.saveWithUserRole(user, result);
+		return "redirect:/login";
+	}
+
 }
