@@ -17,15 +17,12 @@
 <body>
 	<h1>Welcome!</h1>
 	<ul class="nav justify-content-end">
-		<li class="nav-item"><a class="nav-link active"
-			href="http://localhost:8080/login"><button>Login</button></a></li>
+		<li class="nav-item"><a class="nav-link active" href="/login"><button>Login</button></a></li>
 
 		<li class="nav-item"><a class="nav-link active"
-			href="http://localhost:8080/registration"><button>Register
-					User</button></a></li>
+			href="/registration"><button>Register User</button></a></li>
 		<li class="nav-item"><a class="nav-link active"
-			href="http://localhost:8080/adminRegistration"><button>Admin
-					Register</button></a></li>
+			href="/adminRegistration"><button>Admin Register</button></a></li>
 	</ul>
 	<div class="row " style="height: 100vh;">
 		<div class="mx-auto col-10 col-md-8 col-lg-6">

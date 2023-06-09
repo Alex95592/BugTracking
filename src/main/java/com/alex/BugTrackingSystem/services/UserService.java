@@ -36,6 +36,7 @@ public class UserService {
 	}
 
 	public User updateUser(User user) {
+
 		return userRepository.save(user);
 	}
 
@@ -76,12 +77,6 @@ public class UserService {
 			return userRepository.save(newUser);
 		}
 	}
-
-	public User setUserAsAdmin(User user, BindingResult result) {
-		user.setRoles(roleRepository.findByName("ROLE_ADMIN"));
-		return userRepository.save(user);
-	}
-
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username);
 

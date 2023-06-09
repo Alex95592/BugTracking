@@ -40,7 +40,7 @@ public class User {
     private String password;
     
     @Transient
-    @NotEmpty(message="Confirm Password is required!")
+ //  @NotEmpty(message="Confirm Password is required!")
     @Size(min=8, max=128, message="Confirm Password must be at least 8 characters")
     private String confirmPassword;
     

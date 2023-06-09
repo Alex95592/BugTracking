@@ -1,30 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page isErrorPage="true" %> 
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ page isErrorPage="true"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Create New Ticket</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-    crossorigin="anonymous">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
 		<div class="container-fluid ">
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
-				<li class="nav-item"><a class="nav-link" href="">Account</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="/account/${user.username }">Account</a></li>
 				<li class="nav-item"><a class="nav-link active"
-					aria-current="page" href="http://localhost:8080/">Home</a></li>
+					aria-current="page" href="/">Home</a></li>
 
 				<li class="nav-item"><c:if
 						test="${roles[0].name == 'ROLE_ADMIN'}">
-						<a class="nav-link" href="http://localhost:8080/users">Users</a>
+						<a class="nav-link" href="/users">Users</a>
 					</c:if></li>
 			</ul>
 			<form method="POST" action="/logout">
@@ -96,8 +98,7 @@
 					</div>
 					<div>
 						<form:label path="dueDate" class="form-label">Due Date:</form:label>
-						<form:input path="dueDate" type="datetime-local"
-							class="form-control" />
+						<form:input path="dueDate" type="date" class="form-control" />
 					</div>
 					<div>
 						<form:label path="assignedUser" class="form_label">Assigned User:</form:label>
@@ -113,7 +114,7 @@
 					<form:input type="hidden" path="users" value="${user.id}" />
 					<div class="d-grid justify-content-md-end">
 
-						<input type="submit" type="submit" class="btn btn-primary"
+						<input type="submit" class="btn btn-primary"
 							style="margin-top: 10px;" value="Create Ticket" />
 					</div>
 				</form:form>

@@ -77,12 +77,14 @@ public class BugTicket {
 
 	public BugTicket() {}
 	
-	public BugTicket(String name, String importance, String status, String description, Date dueDate) {
+	public BugTicket(String name, String importance, String status, String description, String recreationSteps, Date dueDate, String assignedUser) {
 		this.name = name; 
 		this.importance = importance;
 		this.status = status;
 		this.description = description;
+		this.recreationSteps = recreationSteps;
 		this.dueDate = dueDate;
+		this.assignedUser =assignedUser;
 	}
 	
 	

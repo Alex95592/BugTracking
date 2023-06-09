@@ -45,8 +45,12 @@ public class UserController {
 
 			return "registerPage.jsp";
 		}
-		userService.saveWithUserRole(user, result);
-		return "redirect:/login";
+		 if (userService.saveWithUserRole(user, result) != null) {
+		        return "redirect:/login";
+		    } else {
+		        model.addAttribute("errorMessage", "Failed to save user.");
+		        return "registerPage.jsp";
+		    }
 	}
 
 }

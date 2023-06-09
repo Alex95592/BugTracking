@@ -19,15 +19,15 @@
 	<nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
 		<div class="container-fluid ">
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
-				<li class="nav-item"><a class="nav-link" href="">Account</a></li>
+				<li class="nav-item"><a class="nav-link" href="/account/${currentUser.username }">Account</a></li>
 				<li class="nav-item"><a class="nav-link active"
-					aria-current="page" href="http://localhost:8080/">Home</a></li>
-				<li class="nav-item"><a class="nav-link"
-					href="http://localhost:8080/newTicket">Create Ticket</a></li>
+					aria-current="page" href="/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="/newTicket">Create
+						Ticket</a></li>
 
 				<li class="nav-item"><c:if
 						test="${roles[0].name == 'ROLE_ADMIN'}">
-						<a class="nav-link" href="http://localhost:8080/users">Users</a>
+						<a class="nav-link" href="/users">Users</a>
 					</c:if></li>
 			</ul>
 			<form method="POST" action="/logout">
@@ -48,6 +48,7 @@
 					<th>Username</th>
 					<th>Permissions</th>
 					<th>Delete</th>
+					<th>Edit User</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -70,7 +71,7 @@
 										class="button">
 								</form>
 							</c:if></td>
-
+						<td><a href="/edit/user/${user.id}">Edit User</a></td>
 					</tr>
 				</c:forEach>
 			</tbody>

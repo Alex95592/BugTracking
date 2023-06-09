@@ -21,15 +21,15 @@
 		<div class="container-fluid ">
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
 				<li class="nav-item"><a class="nav-link"
-					href="http://localhost:8080/account">Account</a></li>
+					href="/account/${currentUser.username}">Account</a></li>
 				<li class="nav-item"><a class="nav-link active"
-					aria-current="page" href="http://localhost:8080/">Home</a></li>
-				<li class="nav-item"><a class="nav-link"
-					href="http://localhost:8080/newTicket">Create Ticket</a></li>
+					aria-current="page" href="/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="/newTicket">Create
+						Ticket</a></li>
 
 				<li class="nav-item"><c:if
-						test="${roles[0].name == 'ROLE_ADMIN'}">
-						<a class="nav-link" href="http://localhost:8080/users">Users</a>
+						test="${currentUser.roles[0].name == 'ROLE_ADMIN'}">
+						<a class="nav-link" href="/users">Users</a>
 					</c:if></li>
 			</ul>
 			<form action="" method="GET" class="d-flex">
@@ -72,33 +72,39 @@
 				<th>Status</th>
 				<th>Due Date</th>
 				<th>Reporter</th>
-				<th>Delete</th>
+				<c:if test="${currentUser.roles[0].name == 'ROLE_ADMIN'}">
+					<th>Delete</th>
+				</c:if>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach var="ticket" items="${bugTickets}">
 				<tr>
-					<td><a href="http://localhost:8080/ticket/${ticket.id}"><c:out
+					<td><a href="/ticket/${ticket.id}"><c:out
 								value="${ticket.name}" /></a></td>
 					<c:choose>
 						<c:when test="${ticket.assignedUser == null }">
 							<td>None</td>
 						</c:when>
 						<c:otherwise>
-							<td><c:out value="${ticket.assignedUser}" /></td>
+							<td><a href="/account/${ticket.assignedUser}"><c:out
+										value="${ticket.assignedUser}" /></a></td>
 						</c:otherwise>
 					</c:choose>
 
 					<td><c:out value="${ticket.importance}" /></td>
 					<td><c:out value="${ticket.status}" /></td>
 					<td><fmt:formatDate value="${ticket.dueDate}" /></td>
-					<td><c:out value="${ticket.users[0].username}" /></td>
-					<td><form action="/delete/ticket/${ticket.id}" method="post">
-							<input type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" /> <input type="hidden" name="_method"
-								value="delete"> <input type="submit" value="Delete"
-								class="button">
-						</form></td>
+					<td><a href="/account/${ticket.users[0].username}"><c:out
+								value="${ticket.users[0].username}" /></a></td>
+					<c:if test="${currentUser.roles[0].name == 'ROLE_ADMIN'}">
+						<td><form action="/delete/ticket/${ticket.id}" method="post">
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" /> <input type="hidden" name="_method"
+									value="delete"> <input type="submit" value="Delete"
+									class="button">
+							</form></td>
+					</c:if>
 				</tr>
 			</c:forEach>
 		</tbody>

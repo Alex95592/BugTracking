@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,13 +30,13 @@ public class BugTicketService {
 		Comparator<BugTicket> dueDateComparator = new Comparator<BugTicket>() {
 			@Override
 			public int compare(BugTicket ticket1, BugTicket ticket2) {
-				return ticket2.getDueDate().compareTo(ticket1.getDueDate());
+				return ticket1.getDueDate().compareTo(ticket2.getDueDate());
 			};
 		};
 		Comparator<BugTicket> nameComparator = new Comparator<BugTicket>() {
 			@Override
 			public int compare(BugTicket ticket1, BugTicket ticket2) {
-				return ticket1.getName().compareTo(ticket2.getName());
+				return ticket2.getName().compareTo(ticket1.getName());
 			}
 		};
 		Comparator<BugTicket> importanceComparator = new Comparator<BugTicket>() {
@@ -120,12 +122,25 @@ public class BugTicketService {
 		List<BugTicket> searchResults = new ArrayList<>();
 
 		for (BugTicket bugTicket : allTickets) {
-			if (bugTicket.getName().contains(query)) {
+			String lowerCasedName = bugTicket.getName().toLowerCase();
+			if (lowerCasedName.contains(query)) {
 				searchResults.add(bugTicket);
 			}
 		}
 		return searchResults;
 	}
+	public List<BugTicket> searchNames(String query, List<BugTicket> tickets){
+		List<BugTicket> searchResults = new ArrayList<>();
+		
+		for (BugTicket bugTicket : tickets) {
+			String lowerCasedName = bugTicket.getName().toLowerCase();
+			if (lowerCasedName.contains(query)) {
+				searchResults.add(bugTicket);
+			}
+		}
+		return searchResults;
+	}
+	
 
 	public BugTicket findById(Long id) {
 		Optional<BugTicket> potentialTicket = bugTicketRepository.findById(id);
@@ -135,7 +150,18 @@ public class BugTicketService {
 			return potentialTicket.get();
 		}
 	}
-
+	public List<BugTicket> onlyAssignedTickets(User user){
+		List<BugTicket> allTickets = bugTicketRepository.findAll();
+		
+		List<BugTicket> filteredNullList = allTickets.stream()
+				.filter(bugTicket -> bugTicket.getAssignedUser()!=null)
+				.collect(Collectors.toList());
+		
+		List<BugTicket> filteredList = filteredNullList.stream()
+				.filter(bugTicket -> bugTicket.getAssignedUser().equals(user.getUsername()))
+				.collect(Collectors.toList());
+		return filteredList;
+	}
 	public BugTicket createTicket(BugTicket bugTicket) {
 		return bugTicketRepository.save(bugTicket);
 	}
